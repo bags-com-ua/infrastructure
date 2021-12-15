@@ -9,6 +9,9 @@ on:
       repositoryUrl:
         required: true
         type: string
+    secrets:
+      NUGET_API_KEY:
+        required: true
 
 jobs:
   publish:
