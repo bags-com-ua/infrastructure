@@ -6,7 +6,7 @@ on:
       workingDirectory:
         required: true
         type: string
-      repositoryUrl:
+      repository:
         required: true
         type: string
     secrets:
@@ -38,7 +38,7 @@ jobs:
         run: echo ${{ github.head_ref }}
         
       - name: Create nuget package
-        run: dotnet pack -c Release /p:Version=${GITVERSION_FULLSEMVER/+/.} /p:RepositoryUrl=${{ inputs.repositoryUrl }}
+        run: dotnet pack -c Release /p:Version=${GITVERSION_FULLSEMVER/+/.} /p:RepositoryUrl=https://github.com/${{ inputs.repository }}
         working-directory: ${{ inputs.workingDirectory }}
         
       - name: Publish nuget package
