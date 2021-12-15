@@ -1,0 +1,32 @@
+
+name: Publish nuget package
+
+on: workflow_dispatch
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+
+      - name: Run GitVersion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      
+      - name: Add nuget github source
+        run: dotnet nuget add source https://nuget.pkg.github.com/bags-com-ua/index.json -n github -u prostakov -p ${{ secrets.NUGET_API_KEY }} --store-password-in-clear-text
+      
+      - name: Create nuget package
+        run: dotnet pack -c Release /p:Version=${GITVERSION_FULLSEMVER/+/.} /p:RepositoryUrl=https://github.com/bags-com-ua/bg-novaposhta-client
+        working-directory: ./src/BG.NovaPoshta.Client
+        
+      - name: Publish nuget package
+        run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source github --no-symbols true
