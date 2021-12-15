@@ -30,9 +30,6 @@ jobs:
       
       - name: Add nuget github source
         run: dotnet nuget add source https://nuget.pkg.github.com/bags-com-ua/index.json -n github -u prostakov -p ${{ secrets.NUGET_API_KEY }} --store-password-in-clear-text
-
-      - name: TEST
-        run: echo ${{ github.head_ref }}
         
       - name: Create nuget package
         run: dotnet pack -c Release /p:Version=${GITVERSION_FULLSEMVER/+/.} /p:RepositoryUrl=https://github.com/${{ github.repository }}
