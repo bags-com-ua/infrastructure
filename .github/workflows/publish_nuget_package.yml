@@ -35,7 +35,7 @@ jobs:
         run: echo ${{ github.head_ref }}
         
       - name: Create nuget package
-        run: dotnet pack -c Release /p:Version=${GITVERSION_FULLSEMVER/+/.} /p:RepositoryUrl=https://github1.com/${{ github.repository }}
+        run: dotnet pack -c Release /p:Version=${GITVERSION_FULLSEMVER/+/.} /p:RepositoryUrl=https://github.com/${{ github.repository }}
         working-directory: ${{ inputs.workingDirectory }}
         
       - name: Publish nuget package
